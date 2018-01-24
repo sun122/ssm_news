@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.news.dao.EmployeeMapper">
+ 	
+ 	<resultMap type="com.news.entity.Employee" id="selectAllEmp">
+		<id column="id" property="e_id"/>
+		<result column="lastName" property="e_name"/>
+		<result column="passWord" property="e_password"/>
+		<result column="email" property="e_email"/>
+		<result column="gender" property="e_gander"/>
+	</resultMap>
+ 	<select id="seletAll" resultMap="selectAllEmp">
+ 		SELECT <include refid="empInfo"/> from tbl_employee
+ 	</select>
+ 	
+ 	<sql id="empInfo">
+ 		id as "e_id",lastName as "e_name",email as "e_email",gender as "e_gander",rigestdate as "e_data"
+ 	</sql>
+ 	
+ 	<select id="selectService" resultType="com.news.entity.Employee">
+ 		SELECT <include refid="empInfo"/>
+ 		from tbl_employee where 
+  		<trim suffixOverrides="and">
+ 			<if test="e_name != null">
+ 				lastName=#{e_name} and
+ 			</if>
+ 			<if test="e_email != null">
+ 				email=#{e_email} and
+ 			</if>
+ 			<if test="e_gander != null">
+ 				gender=#{e_gander} and
+ 			</if>
+ 		</trim>
+ 	</select>
+ 	
+ 	<insert id="selectInsertService" parameterType="com.news.entity.Employee">
+ 		INSERT INTO tbl_employee
+ 		<trim prefix="(" suffix=")" suffixOverrides=",">
+ 			<if test="e_name != null">
+ 				lastName,
+ 			</if>
+ 			<if test="e_password != null">
+ 				passWord,
+ 			</if>
+ 			<if test="e_email != null">
+ 				email,
+ 			</if>
+ 			<if test="e_gander != null">
+ 				gender,
+ 			</if>
+  			<if test="e_data != null">
+ 				rigestdate,
+ 			</if> 
+ 		</trim>
+ 		<trim prefix="values ("  suffix=")" suffixOverrides=",">
+ 			<if test="e_name != null">
+ 				#{e_name,jdbcType=VARCHAR},
+ 			</if>
+ 			<if test="e_password != null">
+ 				#{e_password,jdbcType=VARCHAR},
+ 			</if>
+ 			<if test="e_email != null">
+ 				#{e_email,jdbcType=VARCHAR},
+ 			</if>
+ 			<if test="e_gander != null">
+ 				#{e_gander,jdbcType=VARCHAR},
+ 			</if>
+ 			<if test="e_data != null">
+ 				#{e_data,jdbcType=VARCHAR},
+ 			</if>
+ 		</trim>
+ 	</insert>
+ 	
+ 	<update id="UpdataService" parameterType="com.news.entity.Employee">
+ 			UPDATE tbl_employee  SET 
+ 		<trim suffixOverrides=",">
+ 			<if test="e_name != null">
+ 				lastName=#{e_name},
+ 			</if>
+ 			<if test="e_password != null">
+ 				passWord=#{e_password},
+ 			</if>
+ 			<if test="e_email != null">
+ 				email=#{e_email},
+ 			</if>
+ 			<if test="e_gander != null">
+ 				gender=#{e_gander},
+ 			</if>
+  			<if test="e_data != null">
+ 				rigestdate=#{e_data},
+ 			</if> 
+ 		</trim>
+		WHERE id=#{e_id}
+ 	</update>
+ </mapper>

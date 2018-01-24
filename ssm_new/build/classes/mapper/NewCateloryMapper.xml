@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.news.dao.NewCateloryMapper">
+ 	<resultMap type="com.news.entity.NewCatelory" id="newsCateloryInfo">
+ 		<id column="catelogId" jdbcType="INTEGER" property="cateId"/>
+ 		<result column="catelogName" jdbcType="VARCHAR" property="cateNmae"/>
+ 		<result column="catelogMiaoshu" jdbcType="VARCHAR" property="cateDiscrible"/>
+ 	</resultMap>
+ 		
+	<sql id="selectCatelory">
+		catelogId,catelogName,catelogMiaoshu
+	</sql>
+	<select id="selectAllCate" resultMap="newsCateloryInfo">
+		SELECT 
+			<include refid="selectCatelory"></include>
+		FROM
+			t_catelog
+	</select>
+	
+  	<insert id="insertCateloryService" parameterType="com.news.entity.NewCatelory">
+	 	insert into t_catelog(catelogName,catelogMiaoshu) 
+		values
+			(#{cateNmae},#{cateDiscrible})
+	 </insert>
+	 
+	 <update id="updataCatelory" parameterType="com.news.entity.NewCatelory">
+	 	UPDATE t_catelog  SET 
+ 		<trim suffixOverrides=",">
+ 			<if test="cateNmae != null">
+ 				catelogName=#{cateNmae},
+ 			</if>
+ 			<if test="cateDiscrible != null">
+ 				catelogMiaoshu=#{cateDiscrible},
+ 			</if>
+ 		</trim>
+		WHERE catelogId=#{cateId}
+	 </update>
+	 
+	 <delete id=""></delete>
+ </mapper>

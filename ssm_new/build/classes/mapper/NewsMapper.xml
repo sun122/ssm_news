@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.news.dao.NewsMapper">
+ 	<resultMap type="com.news.entity.News" id="newsInfo">
+ 		<id column="newsId" jdbcType="INTEGER" property="newsId"/>
+ 		<result column="newsTitle" jdbcType="VARCHAR" property="newsTitle"/>
+ 		<result column="newsContent" jdbcType="VARCHAR" property="newsContent"/>
+ 		<result column="newsData" jdbcType="VARCHAR" property="newsData"/>
+ 		<result column="author" jdbcType="VARCHAR" property="author"/>
+ 		<result column="catelogId" jdbcType="INTEGER" property="catelogId"/>
+ 		<result column="catelogName" jdbcType="VARCHAR" property="newCate.cateNmae"/>
+<!--   		<association property="newCate" javaType="com.news.entity.NewCatelory">
+ 			<id column="catelogId" property="cateId"/>
+ 			<result column="catelogName" property="cateNmae"/>
+ 		</association> -->
+ 	</resultMap>
+ 		
+	<sql id="selectNews">
+			n.newsId as "newsId",
+			n.newsTitle as "newsTitle",
+			n.newsContent as "newsContent",
+			n.newsDate as "newsData",
+			n.author as "author",
+			n.catelogId as "catelogId",
+			c.catelogName as "newCate.cateNmae"
+	</sql>
+	<select id="listAllNews" resultMap="newsInfo" parameterType="com.news.entity.News">
+		SELECT c.catelogName as "newCate.cateNmae",
+			<include refid="selectNews"></include>
+		FROM
+			t_news n
+			JOIN t_catelog c
+		<where>
+				n.catelogId = c.catelogId
+				<if test="newsId != null">
+					and n.newsId=#{newsId}
+				</if>
+				<if test="catelogId != null">
+					and n.catelogId=#{catelogId}
+				</if>
+		</where>
+	</select>
+	
+  	<insert id="insertNewsService" parameterType="com.news.entity.News">
+	 	insert into t_news(newsTitle,newsContent,newsDate,author,catelogId) 
+		values
+			(#{newsTitle},#{newsContent},#{newsData},#{author},#{catelogId})
+	 </insert>
+	 
+	 <update id="updataNews" parameterType="com.news.entity.News">
+	 	UPDATE t_news  SET 
+ 		<trim suffixOverrides=",">
+ 			<if test="newsTitle != null">
+ 				newsTitle=#{newsTitle},
+ 			</if>
+ 			<if test="newsContent != null">
+ 				newsContent=#{newsContent},
+ 			</if>
+ 			<if test="newsData != null">
+ 				newsDate=#{newsData},
+ 			</if>
+ 			<if test="author != null">
+ 				author=#{author},
+ 			</if>
+  			<if test="catelogId != null">
+ 				catelogId=#{catelogId},
+ 			</if> 
+ 		</trim>
+		WHERE newsId=#{newsId}
+	 </update>
+	 
+	 <delete id=""></delete>
+ </mapper>
