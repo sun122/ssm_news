@@ -60,6 +60,4 @@ public class News {
 		return "News [newsId=" + newsId + ", newsTitle=" + newsTitle + ", newsContent=" + newsContent + ", newsData="
 				+ newsData + ", author=" + author + ", catelogId=" + catelogId + ", newCate=" + newCate + "]";
 	}
-
-	
 }

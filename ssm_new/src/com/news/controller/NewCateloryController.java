@@ -26,7 +26,6 @@ public class NewCateloryController {
 	public Msg selectAllCatelory1(@RequestParam(value="pn",defaultValue="1")Integer pn){
 		PageHelper.startPage(pn,5);
 		
-		
 		List<NewCatelory> catelist = newCateloryService.selectAllCateService();
 		PageInfo<NewCatelory> page = new PageInfo<NewCatelory>(catelist,5);
 		return Msg.success().add("catelist", page);
